@@ -13,41 +13,40 @@ def parse_command(command:str, acc:int, pc:int):
     cmd, val = tuple(map(lambda x: x.strip(), command.split(" ")))
     return command_dict[cmd](pc, acc, int(val))
 
-def part1(data):
+def execute(data):
     pc = 0
     acc = 0
     executed_commands = set()
 
     while(pc < len(data)):
         if(pc in executed_commands):
-            break
+            return False, acc
         cmd = data[pc] #Get current command
         executed_commands.add(pc)
         acc, pc = parse_command(cmd, acc, pc)
 
+    return True, acc
+
+def part1(data):
+    _, acc = execute(data)
     return acc
+
+def generate_combination(data):
+    for index, value in enumerate(data):
+        cmd, val = value.split(" ")
+        if cmd == "nop":
+            yield data[:index] + (f"jmp {val}",) + data[index+1:]
+        elif cmd == 'jmp':
+            yield data[:index] + (f"nop {val}",) + data[index+1:]
 
 def part2(data):
-    pc = 0
-    acc = 0
-    executed_commands = set()
-
-    while(pc < len(data)):
-        cmd = data[pc] #Get current command
-        if(pc in executed_commands):
-            if("jmp" in cmd):
-                print("jmp swap")
-                cmd = cmd.replace('jmp', 'nop')
-            else:
-                print("nop swap")
-                cmd = cmd.replace('nop', 'jmp')        
-        executed_commands.add(pc)
-        acc, pc = parse_command(cmd, acc, pc)
-
+    complete = False
+    for d in generate_combination(data):
+        complete, acc = execute(d)
+        if(complete):
+            break
+        
     return acc
-
-
-
 
 if __name__ == "__main__":
     data = read_file('data.txt')
