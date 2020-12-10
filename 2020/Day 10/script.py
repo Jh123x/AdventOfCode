@@ -1,4 +1,5 @@
 def get_min_max(lst):
+    #O(n) get minimum and maximum
     mini = lst[0]
     maxi = lst[0]
     for i in lst:
@@ -10,6 +11,7 @@ def get_min_max(lst):
 
 #Sort the array
 def counting_sort(lst):
+    # O(n) counting sort
     mini, maxi = get_min_max(lst)
     arr = [0] * (maxi - mini + 3)
     for i in lst:
@@ -24,15 +26,21 @@ def counting_sort(lst):
     return lst
 
 def part1(data):
-    sorted_data = counting_sort(data)
+    #Include starting value and sort O(n)
+    sorted_data = counting_sort([0] + data)
+
+    #Dict to store the differences
     d = {
         1: 0,
         2: 0,
-        3: 1,
+        3: 1, #To include last value
     }
+
+    #Iterate and store differences O(n)
     for i in range(len(sorted_data) - 1):
         d[sorted_data[i+1] - sorted_data[i]] += 1
 
+    #Return the difference
     return (d[1] * d[3])
 
 
@@ -70,8 +78,11 @@ def part2(data):
     return mem[0]
 
 
+#Open and sort the file
 with open('data.txt') as file:
     data = list(map(int, file.readlines()))
         
-print(part1([0] + data))
+
+#Print both part solutions
+print(part1(data))
 print(part2(data))
