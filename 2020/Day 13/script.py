@@ -1,3 +1,5 @@
+from math import prod
+
 def parse_data(data:list):
     leaving_time = int(data[0])
     buses = []
@@ -31,8 +33,34 @@ def check_cond(buses, delay, number):
     return True
 
 
+def euclid_algo(number, mod):
+    pass
+
+def part2(buses, delay):
+
+    #Start with 0
+    target = 0
+
+    #Accumulate the results
+    n = 1
+
+    #Iterate through all the bus and their delay
+    for d, bus in zip(delay, buses):
+
+        #Check if the current number fulfils the condition
+        while (target + d) % bus != 0: 
+
+            #Add n to target if it does not fulfill the condition
+            target += n
+
+        #Increase n by the bus number
+        n *= bus
+
+    return target
+
 with open('data.txt') as file:
     data = tuple(map(lambda x: x.strip(), file.read().split("\n")))
 
 leaving_time, buses, delay = parse_data(data)
 print(part1(leaving_time, buses))
+print(part2(buses, delay))
