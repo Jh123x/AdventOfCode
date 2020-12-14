@@ -28,10 +28,6 @@ def part1(data:list, limit:int = 2020):
 
     return data[limit - 1]
 
-
-
-
-
 with open('data.txt') as file:
     data = list(map(lambda x: int(x.strip()), file.read().split(",")))
 
