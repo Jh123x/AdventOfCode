@@ -21,7 +21,7 @@ def part1(data:list):
             value = int(value)
             b_value = num2bin(value)
 
-            #Translate address
+            #Translate Value
             acc = []
             for a_digit, m_digit in zip(b_value, mask):
                 if m_digit == 'X':
