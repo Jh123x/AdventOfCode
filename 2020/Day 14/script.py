@@ -1,3 +1,4 @@
+from copy import deepcopy
 def num2bin(num:int):
     return "{0:b}".format(num).zfill(36)
 
@@ -35,6 +36,37 @@ def part1(data:list):
     return sum(mem.values())
 
 
+def generate_combinations(bin_addr:str, bit_mask:str):
+    """Generate the combinations based on the mask"""
+    combinations = [[]]
+    for index, (bin_digit, mask_digit) in enumerate(zip(bin_addr, bit_mask)):
+        
+        if bin_digit == mask_digit:
+            for item in combinations:
+                item.append(mask_digit)
+
+        elif mask_digit == '1':
+            for item in combinations:
+                item.append('1')
+
+        elif mask_digit == '0':
+            for item in combinations:
+                item.append(bin_digit)
+
+        else:
+            curr_len = len(combinations)
+            combinations += deepcopy(combinations)
+
+            for i in range(0, curr_len):
+                combinations[i].append('1')
+
+            for i in range(curr_len, curr_len * 2):
+                combinations[i].append('0')
+
+    return tuple(map(lambda x: "".join(x), combinations))
+            
+
+
 def part2(data:list):
     mem = {}
     mask = None
@@ -52,18 +84,10 @@ def part2(data:list):
             value = int(value)
 
             #Translate address
-            acc = []
-            for a_digit, m_digit in zip(b_addr, mask):
-                combi = []
-                if m_digit == 'X':
-                    pass
-                elif m_digit == '0':
-                    pass
-                else:
-                    pass
-
-            #Add it to the memory
-            mem[addr] = bin2num("".join(acc))
+            combinations = generate_combinations(b_addr, mask)
+            for combi in combinations:
+                mem[combi] = value
+                
 
     return sum(mem.values())
 
@@ -72,3 +96,4 @@ with open('data.txt') as file:
     data = file.readlines()
 
 print(part1(data))
+print(part2(data))
