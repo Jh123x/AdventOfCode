@@ -45,6 +45,11 @@ def part1(ranges:tuple, nearby_tickets:tuple):
             valid.append(ticket)
     return invalid_acc, valid
 
+def part2(ranges:tuple, my_ticket:tuple, nearby_tickets:tuple):
+    
+    #Get the valid tickets
+    _, valid = part1(ranges, nearby_tickets)
+    
 
 #Read the file
 with open('data.txt') as file:
