@@ -32,7 +32,6 @@ def parse_row(row: str) -> Tuple[List[int], List[int]]:
     dest, src, no = map(int, row.split(" "))
     return range(src, src + no), range(dest, dest + no)
 
-
 if __name__ == "__main__":
     with open(FILE_NAME) as f:
         data = f.read()
