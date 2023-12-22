@@ -1,4 +1,5 @@
 from typing import Tuple, Set
+from itertools import chain
 
 FILE_NAME = "input.txt"
 
@@ -30,7 +31,16 @@ def part1(data: str) -> int:
 
 
 def parse_seed(seed_str: str) -> Set[int]:
-    return set(map(int, filter(lambda x: x.strip(), seed_str.split(":")[1].split(" "))))
+    nos = list(map(int, filter(lambda x: x.strip(), seed_str.split(":")[1].split(" "))))
+    res = None
+    for idx in range(0, len(nos), 2):
+        start, range_no = nos[idx], nos[idx + 1]
+        tmp = range(start, start + range_no)
+        if res is None:
+            res = tmp
+        else:
+            res = chain(res, tmp)
+    return res
 
 
 def parse_map(a_to_b_str: str, seed_no: Set[int]) -> Set[int]:
@@ -38,7 +48,7 @@ def parse_map(a_to_b_str: str, seed_no: Set[int]) -> Set[int]:
     res = map(parse_row, filter(lambda x: x.strip(), a_to_b_str.split("\n")[1:]))
     for dst, src, range_no in res:
         a_to_b.register(src, dst, range_no)
-    return set(map(lambda x: a_to_b.calc(x), seed_no))
+    return map(lambda x: a_to_b.calc(x), seed_no)
 
 
 def parse_row(row: str) -> Tuple[int]:
