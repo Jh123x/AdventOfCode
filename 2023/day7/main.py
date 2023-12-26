@@ -1,16 +1,17 @@
-from typing import List, Dict
+from typing import List, Dict, Tuple
 from types import LambdaType
 
-FILE_NAME: str = "input.txt" 
+FILE_NAME: str = "input.txt"
 # Expected testcase result: 6440
+# Result != 250247386
 RANKING: List[str] = "AKQJT98765432"
 RANKING: List[str] = RANKING[::-1]
 HIERARCHY_MAP: Dict[int, LambdaType] = {
-    5: lambda _: (20,),
-    4: lambda _: (19,),
-    3: lambda x: (17,) if 2 in set(x.values()) else (18,),
-    2: lambda x: (14,) if list(x.values()).count(2) == 1 else (15,),
-    1: lambda x: tuple(map(lambda y: RANKING.index(y), x.keys())),
+    5: lambda _: 20,
+    4: lambda _: 19,
+    3: lambda x: 18 if 2 in set(x.values()) else 17,
+    2: lambda x: 14 if list(x.values()).count(2) == 1 else 15,
+    1: lambda _: 0,
 }
 
 
@@ -24,32 +25,22 @@ class Bet:
         freq = {}
         for card in cards:
             freq[card] = freq.get(card, 0) + 1
-        return HIERARCHY_MAP.get(max(freq.values()))(freq)
+        start_weight = HIERARCHY_MAP.get(max(freq.values()))(freq),
+        arr=[start_weight]
+        arr.extend([RANKING.index(letter) for letter in self.cards])
+        return tuple(arr)
 
-    def to_alt_rep(self: "Bet") -> str:
-        return (
-            self.cards.replace("A", "E")
-            .replace("T", "A")
-            .replace("J", "B")
-            .replace("Q", "C")
-            .replace("K", "D")
-        )
 
     def __lt__(self: "Bet", __value: "Bet") -> bool:
-        if self.strength == __value.strength:
-            return self.to_alt_rep() < __value.to_alt_rep()
         return self.strength < __value.strength
 
-    def __eq__(self, __value: "Bet") -> bool:
-        return (
-            self.strength == __value.strength
-            and self.to_alt_rep() == __value.to_alt_rep()
-        )
+    def __eq__(self: "Bet", __value: "Bet") -> bool:
+        return self.cards == __value.cards
 
     def __str__(self: "Bet") -> str:
         return self.__repr__()
 
-    def __repr__(self) -> str:
+    def __repr__(self: "Bet") -> str:
         return f"{self.cards} ({self.strength}): {self.bet}"
 
 
@@ -61,10 +52,10 @@ def part1(data_str: str) -> int:
         bet = Bet(cards, int(value))
         vals.append(bet)
     vals.sort()
+    print(vals)
     score = 0
     for idx, bet in enumerate(vals):
-        curr_bet = (idx + 1) * bet.bet
-        score += curr_bet
+        score += (idx + 1) * bet.bet
 
     return score
 
