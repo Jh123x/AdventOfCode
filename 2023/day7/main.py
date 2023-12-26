@@ -1,14 +1,15 @@
 from typing import List, Dict
 from types import LambdaType
 
-FILE_NAME: str = "input.txt"
+FILE_NAME: str = "input.txt" 
+# Expected testcase result: 6440
 RANKING: List[str] = "AKQJT98765432"
 RANKING: List[str] = RANKING[::-1]
 HIERARCHY_MAP: Dict[int, LambdaType] = {
-    5: lambda _: (18,),
-    4: lambda _: (17,),
-    3: lambda x: (16,) if 2 in set(x.values()) else (15,),
-    2: lambda _: (14,),
+    5: lambda _: (20,),
+    4: lambda _: (19,),
+    3: lambda x: (17,) if 2 in set(x.values()) else (18,),
+    2: lambda x: (14,) if list(x.values()).count(2) == 1 else (15,),
     1: lambda x: tuple(map(lambda y: RANKING.index(y), x.keys())),
 }
 
