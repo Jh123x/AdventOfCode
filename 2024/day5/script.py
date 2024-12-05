@@ -26,12 +26,16 @@ def is_valid_page(rules: RuleType, page: List[int]) -> int:
 def part1(rules: RuleType, pages: List[List[int]]) -> int:
     return sum(is_valid_page(rules, page) for page in pages)
 
+
 def reorder_correctly(rule_list: List[Tuple[int, int]], candidates: List[int]) -> int:
     rule_set = set(rule_list)
-    def cmp(n1:int , n2: int) -> int:
-        return -1 if (n1, n2) in rule_set else 0
-    candidates.sort(key=cmp_to_key(cmp))
+    candidates.sort(
+        key=cmp_to_key(
+            lambda x, y: -1 if (x, y) in rule_set else 0
+        )
+    )
     return candidates[len(candidates) // 2]
+
 
 def part2(rules: RuleType, rule_list: List[Tuple[int, int]], pages: List[List[int]]) -> int:
     count = 0
@@ -40,6 +44,7 @@ def part2(rules: RuleType, rule_list: List[Tuple[int, int]], pages: List[List[in
             continue
         count += reorder_correctly(rule_list, page)
     return count
+
 
 if __name__ == '__main__':
     with open(file_name) as f:
