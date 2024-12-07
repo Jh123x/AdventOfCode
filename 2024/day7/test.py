@@ -17,8 +17,10 @@ def is_possible(target: int, nos: List[int], curr_idx: int, curr: int, opts: str
 
     curr_elem = nos[curr_idx]
     for k, fn in operators.items():
+        # Skip for part 1
         if k == '|':
             continue
+
         is_pos, opt_res = is_possible(target, nos, curr_idx + 1, fn(curr, curr_elem), opts + k)
         if not is_pos:
             continue
@@ -50,7 +52,8 @@ def is_possible_2(target: int, nos: List[int], curr_idx: int, curr: int, opts: s
 
     curr_elem = nos[curr_idx]
     for k, fn in operators.items():
-        is_pos, opt_res = is_possible_2(target, nos, curr_idx + 1, fn(curr, curr_elem), opts + k)
+        is_pos, opt_res = is_possible_2(
+            target, nos, curr_idx + 1, fn(curr, curr_elem), opts + k)
         if not is_pos:
             continue
 
