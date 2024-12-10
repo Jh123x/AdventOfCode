@@ -52,7 +52,8 @@ def part1(map: List[List[int]]) -> int:
             total += s
     return total
 
-def part2(map:List[List[int]]) -> int:
+
+def part2(map: List[List[int]]) -> int:
     total = 0
     for x in range(len(map)):
         for y in range(len(map[0])):
@@ -61,6 +62,7 @@ def part2(map:List[List[int]]) -> int:
             s = dfs(map, (x, y), 1, 9)
             total += s
     return total
+
 
 if __name__ == '__main__':
     with open(file_name) as f:
