@@ -1,9 +1,7 @@
-from typing import Tuple, List, Dict, Set
-from math import ceil
-from tqdm import tqdm
+from typing import Tuple, List
 
-file_name = 'test.txt'
-# file_name = 'input.txt'
+# file_name = 'test.txt'
+file_name = 'input.txt'
 
 Point = Tuple[int, int]
 
@@ -37,6 +35,17 @@ class Case:
                 return a_times * self.a_cost + b_times * self.b_cost
         return 0
 
+    def tokens_to_win_fast(self) -> int:
+        px, py = self.prize
+        ax, ay = self.a
+        bx, by = self.b
+
+        bb = (py*ax-ay*px) / (by*ax - ay*bx)
+        ab = (px-bx*bb)/ax
+        if bb != int(bb) or ab != int(ab):
+            return 0
+        return int(bb) * self.b_cost + int(ab) * self.a_cost
+
     def __repr__(self) -> str:
         return f"Case: {self.a} cost {self.a_cost}, {self.b} cost {self.b_cost}, prize {self.prize}"
 
@@ -63,7 +72,15 @@ def parse_case(txt: str) -> Case:
 def part1(cases: List[Case]) -> int:
     tokens = 0
     for case in cases:
-        soln = case.tokens_to_win_1()
+        soln = case.tokens_to_win_fast()
+        tokens += soln
+    return tokens
+
+
+def part2(cases: List[Case]) -> int:
+    tokens = 0
+    for case in cases:
+        soln = case.tokens_to_win_fast()
         tokens += soln
     return tokens
 
@@ -78,4 +95,4 @@ if __name__ == '__main__':
         cases = list(map(parse_case, f.read().split("\n\n")))
 
     print(part1(cases))
-    # print(part2(list(map(update_prize_loc, cases))))
+    print(part2(list(map(update_prize_loc, cases))))
