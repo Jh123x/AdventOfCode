@@ -83,4 +83,4 @@ if __name__ == '__main__':
     print(len(path))
 
     b = part2(points, target)
-    print(points[b])
+    print(points[b-1])
