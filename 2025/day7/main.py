@@ -33,12 +33,12 @@ if __name__ == '__main__':
 
     curr_table = [0 for _ in range(len(data))]
     curr_table[start_idx] += 1
-    for row in data[1:]:
+    for row in data:
         tmp = [0 for _ in range(len(data))]
         for idx, l in enumerate(row):
             if l != '^' or curr_table[idx] == 0:
                 if curr_table[idx] > 0:
-                    tmp[idx] = curr_table[idx]
+                    tmp[idx] += curr_table[idx]
                 continue
             if idx >= 0:
                 tmp[idx-1] += curr_table[idx]
